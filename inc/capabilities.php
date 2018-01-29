@@ -38,10 +38,13 @@ function ct_maybe_grant_capabilities( $allcaps ) {
 	// Allow all the above capabilities depending on the user having the equivalent 'post' capabilities.
 	foreach ( $post_type_capabilities as $post_type_capability ) {
 		if ( 'read_' . CT_POST_TYPE_PLURAL === $post_type_capability ) {
-			$core_capability = 'read'; // Core capability is not called 'read_posts', but simply 'read'.
-		} elseif ( 'create_' . CT_POST_TYPE_PLURAL ) {
-			$core_capability = 'edit_posts'; // Core capability is not called 'create_posts', but 'edit_posts'.
+			// Core capability is not called 'read_posts', but simply 'read'.
+			$core_capability = 'read';
+		} elseif ( 'create_' . CT_POST_TYPE_PLURAL === $post_type_capability ) {
+			// Core capability is not called 'create_posts', but 'edit_posts'.
+			$core_capability = 'edit_posts';
 		} else {
+			// Simply replace our plural slug with 'posts' to get the respective core capability.
 			$core_capability = str_replace( CT_POST_TYPE_PLURAL, 'posts', $post_type_capability );
 		}
 

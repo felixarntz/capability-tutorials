@@ -48,15 +48,22 @@ function ct_register_post_type() {
 		'rest_base'       => CT_POST_TYPE_PLURAL,
 		'menu_position'   => 21,
 		'menu_icon'       => 'dashicons-welcome-learn-more',
+		// If 'map_meta_cap' is true, WordPress will take care of mapping the meta capabilities, otherwise you need to do it.
 		'map_meta_cap'    => true,
+		// Specifying a singular and plural slug for 'capability_type' will have WordPress automatically create custom capabilities
+		// for you. However, there will be no custom 'read' capability, and the 'create_posts' capability will be the same as the
+		// 'edit_posts' one.
 		'capability_type' => array( CT_POST_TYPE_SINGULAR, CT_POST_TYPE_PLURAL ),
+		// Under 'capabilities' you can specify the custom capabilities that should be used instead of the regular post capabilities.
+		// This is the most explicit way of handling post type capabilities, and it is the only way to have a custom 'read' capability
+		// and a custom 'create_posts' capability.
 		'capabilities'    => array(
 			// The following are primitive capabilities.
 			'edit_posts'             => 'edit_' . CT_POST_TYPE_PLURAL,
 			'edit_others_posts'      => 'edit_others_' . CT_POST_TYPE_PLURAL,
 			'publish_posts'          => 'publish_' . CT_POST_TYPE_PLURAL,
 			'read_private_posts'     => 'read_private_' . CT_POST_TYPE_PLURAL,
-			'create_posts'           => 'create_' . CT_POST_TYPE_PLURAL, // This would be the same as the value of 'edit_posts'.
+			'create_posts'           => 'create_' . CT_POST_TYPE_PLURAL, // If we didn't specify this, it would be the same as the value of 'edit_posts'.
 			// The following are primitive capabilities that are only required if 'map_meta_cap' is true (see above), but should be provided in either case.
 			'edit_private_posts'     => 'edit_private_' . CT_POST_TYPE_PLURAL,
 			'edit_published_posts'   => 'edit_published_' . CT_POST_TYPE_PLURAL,
@@ -64,7 +71,7 @@ function ct_register_post_type() {
 			'delete_others_posts'    => 'delete_others_' . CT_POST_TYPE_PLURAL,
 			'delete_private_posts'   => 'delete_private_' . CT_POST_TYPE_PLURAL,
 			'delete_published_posts' => 'delete_published_' . CT_POST_TYPE_PLURAL,
-			'read'                   => 'read_' . CT_POST_TYPE_PLURAL, // This would be 'read'.
+			'read'                   => 'read_' . CT_POST_TYPE_PLURAL, // If we didn't specify this, it would be 'read'.
 			// The following are meta capabilities. Note that there is no meta capability for publishing a post.
 			'edit_post'              => 'edit_' . CT_POST_TYPE_SINGULAR,
 			'delete_post'            => 'delete_' . CT_POST_TYPE_SINGULAR,
