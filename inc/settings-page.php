@@ -34,6 +34,9 @@ function ct_initialize_settings_page() {
 	if ( current_user_can( 'manage_ct_option', 'ct_supports' ) ) {
 		add_settings_field( 'supports', __( 'Supported Features', 'capability-tutorials' ), 'ct_render_settings_page_supports_field', CT_OPTION_GROUP, 'default' );
 	}
+	if ( current_user_can( 'manage_ct_option', 'ct_is_hierarchical' ) ) {
+		add_settings_field( 'is_hierarchical', __( 'Hierarchical', 'capability-tutorials' ), 'ct_render_settings_page_is_hierarchical_field', CT_OPTION_GROUP, 'default' );
+	}
 	if ( current_user_can( 'manage_ct_option', 'ct_has_archive' ) ) {
 		add_settings_field( 'has_archive', __( 'Archive', 'capability-tutorials' ), 'ct_render_settings_page_has_archive_field', CT_OPTION_GROUP, 'default' );
 	}
@@ -98,6 +101,21 @@ function ct_render_settings_page_supports_field() {
 		</div>
 	<?php endforeach; ?>
 	<p class="description"><?php esc_html_e( 'Check the features tutorials should support.', 'capability-tutorials' ); ?></p>
+	<?php
+}
+
+/**
+ * Renders content for the 'is_hierarchical' field.
+ *
+ * @since 1.0.0
+ */
+function ct_render_settings_page_is_hierarchical_field() {
+	$value = ct_is_hierarchical();
+
+	?>
+	<input type="checkbox" id="ct-is-hierarchical" name="ct_is_hierarchical" value="1"<?php checked( $value ); ?> />
+	<label for="ct-is-hierarchical"><?php esc_html_e( 'Make hierarchical?', 'capability-tutorials' ); ?></label>
+	<p class="description"><?php esc_html_e( 'Check this box to allow tutorials to use a hierarchical structure.', 'capability-tutorials' ); ?></p>
 	<?php
 }
 

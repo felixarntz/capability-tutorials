@@ -36,6 +36,14 @@ function ct_register_settings() {
 		'default'           => array( 'title', 'editor', 'comments', 'author', 'thumbnail' ),
 	) );
 
+	register_setting( CT_OPTION_GROUP, 'ct_is_hierarchical', array(
+		'type'              => 'boolean',
+		'description'       => __( 'Whether tutorials have a hierarchical structure.', 'capability-tutorials' ),
+		'sanitize_callback' => 'ct_sanitize_is_hierarchical',
+		'show_in_rest'      => true,
+		'default'           => false,
+	) );
+
 	register_setting( CT_OPTION_GROUP, 'ct_has_archive', array(
 		'type'              => 'boolean',
 		'description'       => __( 'Whether tutorials have archives.', 'capability-tutorials' ),
@@ -66,6 +74,17 @@ function ct_get_rewrite_slug() {
  */
 function ct_get_supports() {
 	return (array) get_option( 'ct_supports' );
+}
+
+/**
+ * Determines whether the post type should be hierarchical.
+ *
+ * @since 1.0.0
+ *
+ * @return bool True if post type is hierarchical, false otherwise.
+ */
+function ct_is_hierarchical() {
+	return (bool) get_option( 'ct_is_hierarchical' );
 }
 
 /**
@@ -148,6 +167,31 @@ function ct_sanitize_supports( $value ) {
 }
 
 /**
+ * Sanitizes whether the post type should be hierarchical.
+ *
+ * @since 1.0.0
+ *
+ * @param mixed $value Unsanitized value.
+ * @return string Sanitized value, or previously stored value if invalid.
+ */
+function ct_sanitize_is_hierarchical( $value ) {
+	$old_value = ct_is_hierarchical();
+
+	if ( ! current_user_can( 'manage_ct_option', 'ct_is_hierarchical' ) ) {
+		return $old_value;
+	}
+
+	$value = (bool) $value;
+
+	// Ensure rewrite rules are regenerated when this changes.
+	if ( $value !== $old_value ) {
+		delete_option( 'rewrite_rules' );
+	}
+
+	return $value;
+}
+
+/**
  * Sanitizes whether the post type should have archives.
  *
  * @since 1.0.0
@@ -156,7 +200,7 @@ function ct_sanitize_supports( $value ) {
  * @return string Sanitized value, or previously stored value if invalid.
  */
 function ct_sanitize_has_archive( $value ) {
-	$old_value = ct_get_rewrite_slug();
+	$old_value = ct_has_archive();
 
 	if ( ! current_user_can( 'manage_ct_option', 'ct_has_archive' ) ) {
 		return $old_value;

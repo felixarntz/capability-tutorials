@@ -78,6 +78,7 @@ function ct_register_post_type() {
 			'read_post'              => 'read_' . CT_POST_TYPE_SINGULAR,
 		),
 		'supports'        => ct_get_supports(),
+		'hierarchical'    => ct_is_hierarchical(),
 		'has_archive'     => ct_has_archive(),
 		'rewrite'         => array(
 			'slug'       => ct_get_rewrite_slug(),
