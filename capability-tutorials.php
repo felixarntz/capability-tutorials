@@ -23,6 +23,10 @@ defined( 'ABSPATH' ) || exit;
 define( 'CT_VERSION', '1.0.0' );
 define( 'CT_POST_TYPE_SINGULAR', 'ct_tutorial' );
 define( 'CT_POST_TYPE_PLURAL', 'ct_tutorials' );
+define( 'CT_CATEGORY_SINGULAR', 'ct_tutorial_category' );
+define( 'CT_CATEGORY_PLURAL', 'ct_tutorial_categories' );
+define( 'CT_TAG_SINGULAR', 'ct_tutorial_tag' );
+define( 'CT_TAG_PLURAL', 'ct_tutorial_tags' );
 define( 'CT_OPTION_GROUP', 'ct_settings' );
 
 /**
@@ -34,6 +38,7 @@ function ct_load_files() {
 	$path = plugin_dir_path( __FILE__ );
 
 	require_once $path . 'inc/post-type.php';
+	require_once $path . 'inc/taxonomies.php';
 	require_once $path . 'inc/capabilities.php';
 	require_once $path . 'inc/settings.php';
 	require_once $path . 'inc/settings-page.php';
@@ -47,6 +52,8 @@ function ct_load_files() {
  */
 function ct_activate() {
 	ct_register_post_type();
+	ct_register_category();
+	ct_register_tag();
 
 	flush_rewrite_rules();
 }

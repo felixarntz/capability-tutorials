@@ -99,6 +99,28 @@ function ct_has_archive() {
 }
 
 /**
+ * Gets the rewrite slug to use for the category.
+ *
+ * @since 1.0.0
+ *
+ * @return string Rewrite slug.
+ */
+function ct_get_category_rewrite_slug() {
+	return _x( 'tutorial-categories', 'rewrite slug', 'capability-tutorials' );
+}
+
+/**
+ * Gets the rewrite slug to use for the tag.
+ *
+ * @since 1.0.0
+ *
+ * @return string Rewrite slug.
+ */
+function ct_get_tag_rewrite_slug() {
+	return _x( 'tutorial-tags', 'rewrite slug', 'capability-tutorials' );
+}
+
+/**
  * Sanitizes and validates the post type rewrite slug.
  *
  * @since 1.0.0

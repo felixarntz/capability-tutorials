@@ -35,7 +35,7 @@ function ct_maybe_grant_capabilities( $allcaps ) {
 		'read_' . CT_POST_TYPE_PLURAL,
 	);
 
-	// Allow all the above capabilities depending on the user having the equivalent 'post' capabilities.
+	// Grant all the above post type capabilities depending on the user having the equivalent core capabilities.
 	foreach ( $post_type_capabilities as $post_type_capability ) {
 		if ( 'read_' . CT_POST_TYPE_PLURAL === $post_type_capability ) {
 			// Core capability is not called 'read_posts', but simply 'read'.
@@ -50,6 +50,40 @@ function ct_maybe_grant_capabilities( $allcaps ) {
 
 		if ( isset( $allcaps[ $core_capability ] ) ) {
 			$allcaps[ $post_type_capability ] = $allcaps[ $core_capability ];
+		}
+	}
+
+	$taxonomy_capabilities = array(
+		'manage_' . CT_CATEGORY_PLURAL,
+		'edit_' . CT_CATEGORY_PLURAL,
+		'delete_' . CT_CATEGORY_PLURAL,
+		'manage_' . CT_TAG_PLURAL,
+		'edit_' . CT_TAG_PLURAL,
+		'delete_' . CT_TAG_PLURAL,
+	);
+
+	// Grant all the above taxonomy capabilities depending on the user having the equivalent core capabilities.
+	foreach ( $taxonomy_capabilities as $taxonomy_capability ) {
+		// Core uses 'manage_categories' as fallback for all basic taxonomy capabilities.
+		$core_capability = 'manage_categories';
+
+		if ( isset( $allcaps[ $core_capability ] ) ) {
+			$allcaps[ $taxonomy_capability ] = $allcaps[ $core_capability ];
+		}
+	}
+
+	$taxonomy_assign_capabilities = array(
+		'assign_' . CT_CATEGORY_PLURAL,
+		'assign_' . CT_TAG_PLURAL,
+	);
+
+	// Grant all the above taxonomy assignment capabilities depending on the user having the equivalent core capabilities.
+	foreach ( $taxonomy_assign_capabilities as $taxonomy_assign_capability ) {
+		// Core uses 'edit_posts' as fallback for all taxonomy assignment capabilities.
+		$core_capability = 'edit_posts';
+
+		if ( isset( $allcaps[ $core_capability ] ) ) {
+			$allcaps[ $taxonomy_assign_capability ] = $allcaps[ $core_capability ];
 		}
 	}
 
